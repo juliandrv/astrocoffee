@@ -1,0 +1,32 @@
+---
+import FoodMenu from '@/components/menu/FoodMenu.astro';
+import DrinksMenu from '@/components/menu/DrinksMenu.astro';
+---
+
+<section class='bg-coffee-800 py-10 -mt-20'>
+  <div
+    class='max-w-7xl mx-auto bg-menu-image bg-no-repeat bg-contain bg-position-[center_80px] pt-[150px] lg:pt-[250px] pb-40'
+  >
+    <h3 class='text-white font-black text-center text-xl pb-4 uppercase'>
+      Nuestro Delicioso
+      <span class='text-2xl block'>Menú</span>
+    </h3>
+
+    <div id='gallery' class='grid grid-cols-1 md:grid-cols-2 gap-5 mt-10'>
+      <FoodMenu />
+      <DrinksMenu />
+    </div>
+  </div>
+</section>
+
+<script>
+  import PhotoSwipeLightbox from 'photoswipe/lightbox';
+  import 'photoswipe/style.css';
+
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: '#gallery',
+    children: 'a',
+    pswpModule: () => import('photoswipe'),
+  });
+  lightbox.init();
+</script>

@@ -1,0 +1,26 @@
+---
+import FooterBox from "./FooterBox.astro";
+---
+
+<footer class="bg-coffee-900 pt-20">
+  <div class="max-w-7xl mx-auto mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+    <FooterBox heading="Ubicación">
+      <p>Cofee Street 36</p>
+      <p>London, UK</p>
+    </FooterBox>
+
+    <FooterBox heading="Reservas">
+      <p>Tel. 3435-25457</p>
+      <a href="tel:3435-25457">Llamar</a>
+    </FooterBox>
+
+    <FooterBox heading="Horario">
+      <p>Lun-Jue: 11:00- 22:00</p>
+      <p>Vie-Sab: 11:00- 23:00</p>
+      <p>Dom: Cerrado</p>
+    </FooterBox>
+  </div>
+  <p class="py-10 text-center text-white text-sm">
+    AstroCoffee. &copy; {new Date().getFullYear()}
+  </p>
+</footer>

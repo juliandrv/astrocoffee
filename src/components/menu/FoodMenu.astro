@@ -1,0 +1,27 @@
+---
+import { ProductsListWPSchema } from '@/types';
+import MenuItem from './MenuItem.astro';
+
+const categorySlug = 'food';
+const url = `${import.meta.env.API_WP_URL}/products?cat_slug=${categorySlug}`;
+const response = await fetch(url);
+const json = await response.json();
+const data = ProductsListWPSchema.parse(json);
+---
+
+<div>
+  <h4 class='text-white font-black text-xl uppercase text-center my-10'>Comida</h4>
+
+  <ul class='space-y3'>
+    {
+      data.map(({ title, acf, featured_image_url }) => (
+        <MenuItem
+          title={title.rendered}
+          description={acf.description}
+          price={acf.price}
+          image={featured_image_url}
+        />
+      ))
+    }
+  </ul>
+</div>

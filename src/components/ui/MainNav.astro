@@ -1,0 +1,26 @@
+---
+const navigation = [
+  { name: 'Inicio', href: '/' },
+  { name: 'Nosotros', href: '/nosotros/' },
+  { name: 'Blog', href: '/blog/' },
+  { name: 'Proceso', href: '/proceso/' },
+  { name: 'Menú', href: '/menu/' },
+  { name: 'Galería', href: '/galeria/' },
+  { name: 'Contacto', href: '/contacto/' },
+];
+
+const { pathname } = Astro.url;
+---
+
+<nav class='flex flex-col md:flex-row items-center gap-4'>
+  {
+    navigation.map((item) => (
+      <a
+        href={item.href}
+        class={`uppercase text-md font-medium hover:text-coffee-400 transition-colors ${pathname === item.href ? 'text-coffee-400' : 'text-white'}`}
+      >
+        {item.name}
+      </a>
+    ))
+  }
+</nav>

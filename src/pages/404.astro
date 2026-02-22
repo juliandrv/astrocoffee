@@ -1,0 +1,13 @@
+---
+import Layout from '@/layouts/Layout.astro';
+
+import bg404 from '@/assets/bg_404.jpg';
+---
+
+<Layout subtitle='Página no encontrada' bgImage={bg404}>
+  <div class='flex flex-col items-center justify-center space-y-3'>
+    <h1 class='text-4xl font-bold'>404</h1>
+    <p class='text-lg'>Página no encontrada</p>
+    <a href='/' class='bg-coffee-600 text-white px-5 py-2 rounded-xs'>Volver al inicio</a>
+  </div>
+</Layout>

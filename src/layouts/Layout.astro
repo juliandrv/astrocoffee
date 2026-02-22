@@ -1,23 +1,52 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+import '@/styles/globals.css';
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+import Header from '@/components/ui/Header.astro';
+import Footer from '@/components/ui/Footer.astro';
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+  bgImage?: string | ImageMetadata;
+}
+
+const { title, subtitle, bgImage } = Astro.props;
+const brand = 'AstroCoffee';
+const fullTitle = `${brand} - ${title}`;
+---
+
+<!doctype html>
+<html lang='es'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width' />
+    <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
+    <link rel='icon' href='/favicon.ico' />
+    <meta name='generator' content={Astro.generator} />
+    <title>{fullTitle}</title>
+    <link rel='preconnect' href='https://fonts.googleapis.com' />
+    <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
+    <link
+      href='https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=PT+Sans:wght@400;700&display=swap'
+      rel='stylesheet'
+    />
+  </head>
+  <body class='bg-coffee-100'>
+    <Header subtitle={subtitle} bgImage={bgImage} />
+
+    <main class='max-w-7xl mx-auto bg-white p-10 md:p-20 lg:-mt-20 relative rounded-sm'>
+      {
+        title && (
+          <h2 class='text-coffee-900 font-black text-center text-4xl pb-10 uppercase after:coffee-icon'>
+            {title}
+          </h2>
+        )
+      }
+      <slot />
+    </main>
+
+    <slot name='after-main-content' />
+
+    <Footer />
+  </body>
+</html>

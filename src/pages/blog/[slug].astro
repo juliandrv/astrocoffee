@@ -1,0 +1,26 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PostMeta from '@/components/blog/PostMeta.astro';
+
+import { PostWPSchema } from '@/types';
+
+export const prerender = false;
+
+const { slug } = Astro.params;
+
+const url = `${import.meta.env.API_WP_URL}/posts?slug=${slug}`;
+const response = await fetch(url);
+const json = await response.json();
+const data = PostWPSchema.safeParse(json[0]);
+
+if (!data.success) return Astro.redirect('/404');
+
+const { title, content, featured_image_url, date, category_list } = data.data;
+---
+
+<Layout title={title.rendered} subtitle={title.rendered} bgImage={featured_image_url}>
+  <article class='space-y-3 max-w-2xl mx-auto'>
+    <PostMeta date={date} category_list={category_list} />
+    <div set:html={content.rendered} class='space-y-3 mt-6' />
+  </article>
+</Layout>

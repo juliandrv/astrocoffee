@@ -1,0 +1,15 @@
+---
+interface Props {
+  heading: string;
+}
+
+const { heading } = Astro.props;
+---
+
+<div class="text-center space-y-2">
+  <h4 class="text-coffee-400 text-xl font-bold uppercase">{heading}</h4>
+
+  <div class="text-md text-white">
+    <slot />
+  </div>
+</div>

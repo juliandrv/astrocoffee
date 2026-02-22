@@ -1,0 +1,37 @@
+---
+import { Picture, inferRemoteSize } from 'astro:assets';
+import Layout from '@/layouts/Layout.astro';
+import { ProcessWPSchema, type ProcessPage } from '@/types';
+import ProcessItem from '@/components/process/ProcessItem.astro';
+
+const url = `${import.meta.env.API_WP_URL}/pages?slug=proceso`;
+const response = await fetch(url);
+const json = await response.json();
+const data = ProcessWPSchema.parse(json[0]);
+
+const { title, content, acf, featured_image_url }: ProcessPage = data;
+
+const processWithSizes = await Promise.all(
+  acf.process.map(async (item) => {
+    const { width, height } = await inferRemoteSize(item.image);
+    return { ...item, width, height };
+  }),
+);
+---
+
+<Layout title={title.rendered} subtitle={acf.subtitle} bgImage={featured_image_url}>
+  <div set:html={content.rendered} class='space-y-3 mt-10 md:mt-0' />
+  <div class='mt-10 space-y-10'>
+    {
+      processWithSizes.map((item) => (
+        <ProcessItem
+          label={item.label}
+          description={item.description}
+          image={item.image}
+          width={item.width}
+          height={item.height}
+        />
+      ))
+    }
+  </div>
+</Layout>

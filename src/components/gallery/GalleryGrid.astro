@@ -1,0 +1,43 @@
+---
+import { Picture, inferRemoteSize } from 'astro:assets';
+
+interface Props {
+  title: string;
+  images: string[];
+}
+
+const { title, images } = Astro.props;
+---
+
+<div id='gallery' class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10'>
+  {
+    images.map(async (image) => {
+      const { width, height } = await inferRemoteSize(image);
+      return (
+        <a href={image} data-pswp-width={width} data-pswp-height={height}>
+          <Picture
+            data-src={image}
+            src={image}
+            alt={`Imagen de ${title}`}
+            width={width}
+            height={height}
+            formats={['webp', 'avif']}
+            class='object-cover'
+          />
+        </a>
+      );
+    })
+  }
+</div>
+
+<script>
+  import PhotoSwipeLightbox from 'photoswipe/lightbox';
+  import 'photoswipe/style.css';
+
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: '#gallery',
+    children: 'a',
+    pswpModule: () => import('photoswipe'),
+  });
+  lightbox.init();
+</script>

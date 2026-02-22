@@ -1,0 +1,19 @@
+---
+import { Picture, inferRemoteSize } from 'astro:assets';
+
+import Layout from '@/layouts/Layout.astro';
+import { GalleryWPSchema } from '@/types';
+import GalleryGrid from '@/components/gallery/GalleryGrid.astro';
+
+const url = `${import.meta.env.API_WP_URL}/pages?slug=galeria`;
+const response = await fetch(url);
+const json = await response.json();
+console.log(json);
+const data = GalleryWPSchema.parse(json[0]);
+
+const { title, acf, featured_image_url } = data;
+---
+
+<Layout title={title.rendered} subtitle={acf.subtitle} bgImage={featured_image_url}>
+  <GalleryGrid title={title.rendered} images={acf.gallery} />
+</Layout>

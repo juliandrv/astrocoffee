@@ -1,0 +1,22 @@
+---
+import type { Post } from '@/types';
+
+interface Props {
+  date: string;
+  category_list: Post['category_list'];
+}
+
+const { date, category_list } = Astro.props;
+---
+
+<p class='text-sm'>Escrito el: <span class='text-coffee-600'>{date}</span></p>
+{
+  category_list.map(({ label, slug }) => (
+    <a
+      href={`/blog/categoria/${slug}`}
+      class='inline-block text-xs text-white bg-coffee-600 px-5 py-1 rounded-xs mr-2'
+    >
+      {label}
+    </a>
+  ))
+}

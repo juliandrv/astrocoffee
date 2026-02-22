@@ -1,0 +1,43 @@
+---
+import { getImage } from 'astro:assets';
+
+import Logo from '@/assets/logo.svg';
+import MainNav from './MainNav.astro';
+
+interface Props {
+  subtitle?: string;
+  bgImage?: string | ImageMetadata;
+}
+
+const { bgImage, subtitle } = Astro.props;
+const image = bgImage
+  ? await getImage({
+      src: bgImage,
+      inferSize: true,
+      format: 'webp',
+    })
+  : null;
+---
+
+<header class='min-h-72 relative pb-48'>
+  <div
+    class='absolute inset-0 bg-center bg-cover'
+    style={{ backgroundImage: `url(${image?.src})` }}
+  >
+  </div>
+
+  <div class='absolute inset-0 bg-black/60'></div>
+
+  <div class='relative max-w-7xl mx-auto'>
+    <div class='flex flex-col md:flex-row md:justify-between items-center px-0 md:px-6 xl:px-0'>
+      <a href='/' aria-label='Logo'>
+        <Logo class='w-36' />
+      </a>
+      <MainNav />
+    </div>
+
+    <h1 class='text-3xl font-black uppercase text-white text-center mt-18'>
+      {subtitle}
+    </h1>
+  </div>
+</header>

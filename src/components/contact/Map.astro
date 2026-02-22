@@ -1,0 +1,63 @@
+---
+// Importamos los estilos de Leaflet directamente en el componente
+import 'leaflet/dist/leaflet.css';
+
+interface Props {
+  lat: number;
+  lng: number;
+  zoom?: number;
+  address?: string;
+}
+
+const { lat, lng, zoom = 15, address } = Astro.props;
+---
+
+<div>
+  <h3 class='text-coffee-900 text-xl font-bold text-center uppercase mb-4'>Ubicación</h3>
+  <div id='map-container' class='h-120 w-full border-2 border-gray-100 shadow-sm'></div>
+  {/* Pasamos los datos de Astro al JS mediante data-attributes */}
+  <leaflet-map data-lat={lat} data-lng={lng} data-zoom={zoom} data-address={address}></leaflet-map>
+</div>
+
+<script>
+  // @ts-ignore
+  import L from 'leaflet';
+
+  // Definimos un Custom Element para manejar el ciclo de vida del mapa
+  class LeafletMap extends HTMLElement {
+    connectedCallback() {
+      const address = this.dataset.address;
+      const lat = parseFloat(this.dataset.lat || '0');
+      const lng = parseFloat(this.dataset.lng || '0');
+      const zoom = parseInt(this.dataset.zoom || '30');
+
+      // Inicializamos el mapa
+      const map = L.map('map-container').setView([lat, lng], zoom);
+
+      // Cargamos las "Tiles" de OpenStreetMap
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(map);
+
+      // Añadimos el marcador
+      L.marker([lat, lng]).addTo(map).bindPopup(address).openPopup();
+
+      // Arreglo para un bug común de Leaflet con contenedores ocultos o redimensionados
+      setTimeout(() => {
+        map.invalidateSize();
+      }, 100);
+    }
+  }
+
+  // Registramos el elemento personalizado
+  if (!customElements.get('leaflet-map')) {
+    customElements.define('leaflet-map', LeafletMap);
+  }
+</script>
+
+<style>
+  /* Fix para iconos de Leaflet (a veces no cargan bien los assets por defecto) */
+  :global(.leaflet-default-icon-path) {
+    background-image: url(https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png);
+  }
+</style>

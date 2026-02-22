@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Outfit", sans-serif;
+  --font-mono: "PT Sans", sans-serif;
+
+  --color-coffee-50: oklch(0.976 0.023 93.3);
+  --color-coffee-100: oklch(0.92 0.02 93.6);
+  --color-coffee-200: oklch(0.87 0.09 88);
+  --color-coffee-300: oklch(0.79 0.13 85);
+  --color-coffee-400: oklch(0.72 0.15 84);
+  --color-coffee-500: oklch(0.64 0.16 80);
+  --color-coffee-600: oklch(0.55 0.15 72);
+  --color-coffee-700: oklch(0.45 0.13 65);
+  --color-coffee-800: oklch(0.38 0.1 62);
+  --color-coffee-900: oklch(0.31 0.08 58);
+  --color-coffee-950: oklch(0.21 0.06 53);
+
+  --icon-size: 6rem;
+}
+
+@utility coffee-icon {
+  content: "";
+  background-image: url("../assets/coffee.svg");
+  background-position: center;
+  background-size: var(--icon-size);
+  width: var(--icon-size);
+  height: var(--icon-size);
+  display: block;
+  margin-inline: auto;
+}
+
+@utility bg-menu-image {
+  background-image: url('../assets/menu_artwork.svg');
+}
+
+.input-label {
+  @apply text-coffee-900 uppercase font-bold text-sm;
+}
+.input-field {
+  @apply border-coffee-900 border-2 p-2;
+}

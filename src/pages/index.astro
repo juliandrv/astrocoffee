@@ -1,11 +1,33 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import BgImage from '@/assets/bg_home.jpg';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Layout from '@/layouts/Layout.astro';
+import CategoryIconLabel from '@/components/ui/CategoryIconLabel.astro';
+
+const subtitle = 'Disfruta una deleliciosa taza de café';
 ---
 
-<Layout>
-	<Welcome />
+<Layout title='Inicio' subtitle={subtitle} bgImage={BgImage}>
+  <h2 class='text-coffee-400 text-center font-black text-lg uppercase after:coffee-icon'>
+    Conoce más <span class='block text-3xl text-coffee-900'>Sobre nosotros</span>
+  </h2>
+
+  <p class='text-center text-md mt-10'>
+    Desde 1939, nuestra cafetería ha sido un rincón acogedor donde el buen café y la comida hecha
+    con cariño son protagonistas. Aquí no solo vienes a disfrutar de una bebida: vienes a saborear
+    el resultado de décadas de dedicación, recetas caseras y una selección cuidadosa de ingredientes
+    frescos y de calidad.
+  </p>
+
+  <p class='text-center text-md mt-10'>
+    En cada plato y en cada taza encontrarás el equilibrio perfecto entre tradición y sabor. Desde
+    nuestro café artesanal hasta nuestros desayunos, almuerzos y repostería, todo está preparado con
+    productos naturales, sin atajos ni artificios.
+  </p>
+
+  <div class='grid grid-cols-1 md:grid-cols-3 gap-6'>
+    <CategoryIconLabel icon='./icon_coffee.svg' text='Café' />
+    <CategoryIconLabel icon='./icon_dessert.svg' text='Postres' />
+    <CategoryIconLabel icon='./icon_tea.svg' text='Té' />
+  </div>
 </Layout>

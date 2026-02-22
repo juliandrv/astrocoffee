@@ -1,0 +1,32 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import PostCard from '@/components/blog/PostCard.astro';
+
+import bgImage from '@/assets/bg_home.jpg';
+
+import { PostsWPListSchema, CategoriesWPSlugSchema, CategorySchema } from '@/types';
+
+export async function getStaticPaths() {
+  const response = await fetch(`${import.meta.env.API_WP_URL}/categories?_fields=slug`);
+  const json = await response.json();
+  const categories = CategoriesWPSlugSchema.parse(json);
+  return categories.map((category) => ({
+    params: { slug: category.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const categoryUrl = `${import.meta.env.API_WP_URL}/categories?slug=${slug}`;
+const categoryResponse = await fetch(categoryUrl);
+const categoryJson = await categoryResponse.json();
+const categoryData = CategorySchema.parse(categoryJson[0]);
+
+const postsUrl = `${import.meta.env.API_WP_URL}/posts?categories=${categoryData.id}`;
+const postsResponse = await fetch(postsUrl);
+const postsJson = await postsResponse.json();
+const postsData = PostsWPListSchema.parse(postsJson);
+---
+
+<Layout title={categoryData.name} subtitle={`Categoría: ${categoryData.name}`} bgImage={bgImage}>
+  {postsData.map((post) => <PostCard post={post} />)}
+</Layout>
