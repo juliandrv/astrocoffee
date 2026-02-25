@@ -1,15 +1,15 @@
 ---
-import { Picture, inferRemoteSize } from 'astro:assets';
+import { Picture, inferRemoteSize } from "astro:assets";
 
 interface Props {
-  title: string;
+  title?: string;
   images: string[];
 }
 
 const { title, images } = Astro.props;
 ---
 
-<div id='gallery' class='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10'>
+<div id="gallery" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
   {
     images.map(async (image) => {
       const { width, height } = await inferRemoteSize(image);
@@ -21,8 +21,8 @@ const { title, images } = Astro.props;
             alt={`Imagen de ${title}`}
             width={width}
             height={height}
-            formats={['webp', 'avif']}
-            class='object-cover'
+            formats={["webp", "avif"]}
+            class="object-cover"
           />
         </a>
       );
@@ -31,13 +31,16 @@ const { title, images } = Astro.props;
 </div>
 
 <script>
-  import PhotoSwipeLightbox from 'photoswipe/lightbox';
-  import 'photoswipe/style.css';
+  import PhotoSwipeLightbox from "photoswipe/lightbox";
+  import "photoswipe/style.css";
 
   const lightbox = new PhotoSwipeLightbox({
-    gallery: '#gallery',
-    children: 'a',
-    pswpModule: () => import('photoswipe'),
+    gallery: "#gallery",
+    children: "a",
+    pswpModule: () => import("photoswipe"),
   });
   lightbox.init();
+  document.addEventListener("astro:after-swap", () => {
+    lightbox.init();
+  });
 </script>

@@ -1,0 +1,21 @@
+---
+import { GalleryWPSchema } from "@/types";
+import GalleryGrid from "@/components/gallery/GalleryGrid.astro";
+
+const url = `${import.meta.env.API_WP_URL}/pages?slug=galeria`;
+const response = await fetch(url);
+const json = await response.json();
+const data = GalleryWPSchema.parse(json[0]);
+
+const { acf } = data;
+---
+
+<section class="bg-white px-20p pb-40 max-w-7xl mx-auto px-20 relative">
+  <h2
+    class="text-coffee-400 text-center font-black text-lg uppercase after:coffee-icon mb-10"
+  >
+    Vive la
+    <span class="text-coffee-900 text-3xl block">experiencia</span>
+  </h2>
+  <GalleryGrid images={acf.gallery} />
+</section>

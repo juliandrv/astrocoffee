@@ -1,7 +1,7 @@
 ---
-import type { Post } from '@/types';
-import { Picture, inferRemoteSize } from 'astro:assets';
-import PostMeta from './PostMeta.astro';
+import type { Post } from "@/types";
+import { Picture, inferRemoteSize } from "astro:assets";
+import PostMeta from "./PostMeta.astro";
 
 interface Props {
   post: Post;
@@ -9,14 +9,13 @@ interface Props {
 const { post } = Astro.props;
 const { title, slug, excerpt, featured_image_url, date, category_list } = post;
 const { width, height } = await inferRemoteSize(featured_image_url);
-console.log(date, category_list);
 ---
 
 <article
-  class='grid grid-cols-1 md:grid-cols-3 gap-5 py-10 border-b last:border-b-0 border-zinc-300'
+  class="grid grid-cols-1 md:grid-cols-3 gap-5 py-10 border-b last:border-b-0 border-zinc-300"
 >
-  <div class='md:col-span-2 space-y-3'>
-    <h3 class='text-coffee-900 font-black text-2xl uppercase'>
+  <div class="md:col-span-2 space-y-3">
+    <h3 class="text-coffee-900 font-black text-2xl uppercase">
       <a href={`/blog/${slug}`}>
         {title.rendered}
       </a>
@@ -29,7 +28,7 @@ console.log(date, category_list);
     alt={`Imagen de ${title.rendered}`}
     width={width}
     height={height}
-    formats={['webp', 'avif']}
-    class='w-full lg:w-96 h-64 object-cover rounded-2xl'
+    formats={["webp", "avif"]}
+    class="w-full lg:w-96 h-64 object-cover rounded-2xl"
   />
 </article>

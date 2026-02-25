@@ -30,7 +30,6 @@ export const contact = {
     });
 
     const json = await response.json();
-    console.log('Respuesta de WP:', json);
 
     // CF7 devuelve 200 OK incluso si hay errores de validación internos,
     // por lo que debemos revisar json.status

@@ -1,13 +1,12 @@
 ---
-import PostCard from './PostCard.astro';
+import PostCard from "./PostCard.astro";
 
-import { PostsWPListSchema } from '@/types';
+import { PostsWPListSchema } from "@/types";
 
 const url = `${import.meta.env.API_WP_URL}/posts`;
 const response = await fetch(url);
 const json = await response.json();
 const data = PostsWPListSchema.parse(json);
-console.log(data);
 ---
 
 {data.map((post) => <PostCard post={post} />)}

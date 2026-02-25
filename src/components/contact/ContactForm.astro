@@ -3,62 +3,81 @@
 ---
 
 <div>
-  <h3 class='text-coffee-900 font-black text-center text-xl uppercase mb-4'>Contacto</h3>
-  <form method='post' class='space-y-3' novalidate>
-    <legend class='leading-none'>Llena todos los campos para enviar un mensaje.</legend>
+  <h3 class="text-coffee-900 font-black text-center text-xl uppercase mb-4">
+    Contacto
+  </h3>
+  <form method="post" class="space-y-3" novalidate>
+    <legend class="leading-none"
+      >Llena todos los campos para enviar un mensaje.</legend
+    >
 
-    <div class='flex flex-col space-y-1'>
-      <label for='name' class='input-label'>Nombre:</label>
-      <input id='name' type='text' name='name' placeholder='Tu Nombre' class='input-field' />
-    </div>
-
-    <div class='flex flex-col space-y-1'>
-      <label for='email' class='input-label'>Email:</label>
-      <input id='email' type='email' name='email' placeholder='Tu Email' class='input-field' />
-    </div>
-
-    <div class='flex flex-col space-y-1'>
-      <label for='subject' class='input-label'>Asunto:</label>
+    <div class="flex flex-col space-y-1">
+      <label for="name" class="input-label">Nombre:</label>
       <input
-        id='subject'
-        type='text'
-        name='subject'
-        placeholder='Asunto de Mensaje'
-        class='input-field'
+        id="name"
+        type="text"
+        name="name"
+        placeholder="Tu Nombre"
+        class="input-field"
       />
     </div>
 
-    <div class='flex flex-col space-y-1'>
-      <label for='message' class='input-label'>Contenido:</label>
-      <textarea id='message' name='message' placeholder='Tu Mensaje' class='input-field h-32'
-      ></textarea>
+    <div class="flex flex-col space-y-1">
+      <label for="email" class="input-label">Email:</label>
+      <input
+        id="email"
+        type="email"
+        name="email"
+        placeholder="Tu Email"
+        class="input-field"
+      />
+    </div>
+
+    <div class="flex flex-col space-y-1">
+      <label for="subject" class="input-label">Asunto:</label>
+      <input
+        id="subject"
+        type="text"
+        name="subject"
+        placeholder="Asunto de Mensaje"
+        class="input-field"
+      />
+    </div>
+
+    <div class="flex flex-col space-y-1">
+      <label for="message" class="input-label">Contenido:</label>
+      <textarea
+        id="message"
+        name="message"
+        placeholder="Tu Mensaje"
+        class="input-field h-32"></textarea>
     </div>
 
     <input
-      type='submit'
-      value='Enviar'
-      class='bg-coffee-900 w-full p-3 text-white uppercase font-bold cursor-pointer hover:bg-coffee-700 text-lg'
+      type="submit"
+      value="Enviar"
+      class="bg-coffee-900 w-full p-3 text-white uppercase font-bold cursor-pointer hover:bg-coffee-700 text-lg"
     />
   </form>
 </div>
 
 <script>
-  import { actions, isInputError } from 'astro:actions';
+  import { actions, isInputError } from "astro:actions";
 
   // @ts-ignore
-  import Toastify from 'toastify-js';
-  import 'toastify-js/src/toastify.css';
+  import Toastify from "toastify-js";
+  import "toastify-js/src/toastify.css";
 
-  const form = document.querySelector('form');
+  const form = document.querySelector("form");
 
   function clearErrors() {
-    document.querySelectorAll('.field-error').forEach((el) => {
-      el.textContent = '';
-      el.classList.add('hidden');
+    document.querySelectorAll(".field-error").forEach((el) => {
+      el.textContent = "";
+      el.classList.add("hidden");
     });
   }
 
-  form?.addEventListener('submit', async (e) => {
+  form?.addEventListener("submit", async (e) => {
     e.preventDefault();
     clearErrors();
 
@@ -73,11 +92,11 @@
         Toastify({
           text: error,
           duration: 6000,
-          gravity: 'top',
-          position: 'right',
+          gravity: "top",
+          position: "right",
           style: {
-            background: '#b91c1c',
-            borderRadius: '8px',
+            background: "#b91c1c",
+            borderRadius: "8px",
           },
           stopOnFocus: true,
         }).showToast();
@@ -86,13 +105,13 @@
 
     if (error) {
       Toastify({
-        text: error.message || 'Hubo un problema al procesar la solicitud',
+        text: error.message || "Hubo un problema al procesar la solicitud",
         duration: 6000,
-        gravity: 'top',
-        position: 'right',
+        gravity: "top",
+        position: "right",
         style: {
-          background: '#f59e0b',
-          borderRadius: '8px',
+          background: "#f59e0b",
+          borderRadius: "8px",
         },
         stopOnFocus: true,
       }).showToast();
@@ -102,13 +121,13 @@
     if (data?.success) {
       form.reset();
       Toastify({
-        text: data.message || '¡Mensaje enviado con éxito!',
+        text: data.message || "¡Mensaje enviado con éxito!",
         duration: 6000,
-        gravity: 'top',
-        position: 'right',
+        gravity: "top",
+        position: "right",
         style: {
-          background: '#22c55d',
-          borderRadius: '8px',
+          background: "#22c55d",
+          borderRadius: "8px",
         },
         stopOnFocus: true,
       }).showToast();

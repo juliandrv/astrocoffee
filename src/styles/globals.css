@@ -37,6 +37,7 @@
 .input-label {
   @apply text-coffee-900 uppercase font-bold text-sm;
 }
+
 .input-field {
   @apply border-coffee-900 border-2 p-2;
 }
