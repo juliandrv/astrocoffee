@@ -1,26 +1,42 @@
 ---
-import Layout from '@/layouts/Layout.astro';
-import PostMeta from '@/components/blog/PostMeta.astro';
+import PostMeta from "@/components/blog/PostMeta.astro";
+import Layout from "@/layouts/Layout.astro";
+import { PostWPSchema, PostsWPListSchema, type Post } from "@/types";
 
-import { PostWPSchema } from '@/types';
+const API = import.meta.env.API_WP_URL;
 
-export const prerender = false;
+// 1️⃣ Genera todas las rutas en build
+export async function getStaticPaths() {
+  const res = await fetch(`${API}/posts`);
+  const json = await res.json();
+  const posts: Post[] = PostsWPListSchema.parse(json);
 
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+  }));
+}
+
+// 2️⃣ Obtiene datos del post en build time
 const { slug } = Astro.params;
 
-const url = `${import.meta.env.API_WP_URL}/posts?slug=${slug}`;
-const response = await fetch(url);
+const response = await fetch(`${API}/posts?slug=${slug}`);
 const json = await response.json();
 const data = PostWPSchema.safeParse(json[0]);
 
-if (!data.success) return Astro.redirect('/404');
+if (!data.success) {
+  throw new Error("Post inválido en build");
+}
 
 const { title, content, featured_image_url, date, category_list } = data.data;
 ---
 
-<Layout title={title.rendered} subtitle={title.rendered} bgImage={featured_image_url}>
-  <article class='space-y-3 max-w-2xl mx-auto'>
+<Layout
+  title={title.rendered}
+  subtitle={title.rendered}
+  bgImage={featured_image_url}
+>
+  <article class="space-y-3 max-w-2xl mx-auto">
     <PostMeta date={date} category_list={category_list} />
-    <div set:html={content.rendered} class='space-y-3 mt-6' />
+    <div set:html={content.rendered} class="space-y-3 mt-6" />
   </article>
 </Layout>
