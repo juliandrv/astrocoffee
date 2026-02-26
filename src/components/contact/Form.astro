@@ -1,0 +1,141 @@
+---
+const CF7_URL = `${import.meta.env.HOME_URL}/wp-json/contact-form-7/v1/contact-forms/277/feedback`;
+---
+
+<div>
+  <h3 class="text-coffee-900 font-black text-center text-xl uppercase mb-4">
+    Contacto
+  </h3>
+
+  <form id="contact-form" class="space-y-3" novalidate>
+    <legend class="leading-none">
+      Llena todos los campos para enviar un mensaje.
+    </legend>
+
+    <div class="flex flex-col space-y-1">
+      <label for="name" class="input-label">Nombre:</label>
+      <input
+        id="name"
+        type="text"
+        name="your-name"
+        placeholder="Tu Nombre"
+        class="input-field"
+      />
+    </div>
+
+    <div class="flex flex-col space-y-1">
+      <label for="email" class="input-label">Email:</label>
+      <input
+        id="email"
+        type="email"
+        name="your-email"
+        placeholder="Tu Email"
+        class="input-field"
+      />
+    </div>
+
+    <div class="flex flex-col space-y-1">
+      <label for="subject" class="input-label">Asunto:</label>
+      <input
+        id="subject"
+        type="text"
+        name="your-subject"
+        placeholder="Asunto de Mensaje"
+        class="input-field"
+      />
+    </div>
+
+    <div class="flex flex-col space-y-1">
+      <label for="message" class="input-label">Contenido:</label>
+      <textarea
+        id="message"
+        name="your-message"
+        placeholder="Tu Mensaje"
+        class="input-field h-32"></textarea>
+    </div>
+
+    <button
+      type="submit"
+      id="submit-btn"
+      class="bg-coffee-900 w-full p-3 text-white uppercase font-bold cursor-pointer hover:bg-coffee-700 text-lg disabled:opacity-60 disabled:cursor-not-allowed"
+    >
+      Enviar
+    </button>
+  </form>
+</div>
+
+<script is:inline define:vars={{ CF7_URL }}>
+  // @ts-ignore
+  import Toastify from "toastify-js";
+  import "toastify-js/src/toastify.css";
+  import { ContactFormSchema } from "@/schemas";
+
+  const form = document.getElementById("contact-form");
+  const submitBtn = document.getElementById("submit-btn");
+
+  // ── Toast helpers ───────────────────────────────────────────
+  const toast = (text, background) =>
+    Toastify({
+      text,
+      duration: 6000,
+      gravity: "top",
+      position: "right",
+      style: { background, borderRadius: "8px" },
+      stopOnFocus: true,
+    }).showToast();
+
+  const toastError = (msg) => toast(msg, "#b91c1c");
+  const toastWarning = (msg) => toast(msg, "#f59e0b");
+  const toastSuccess = (msg) => toast(msg, "#22c55e");
+
+  // ── Submit ──────────────────────────────────────────────────
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    // Validación con Zod
+    const parsed = ContactFormSchema.safeParse({
+      "your-name": formData.get("your-name"),
+      "your-email": formData.get("your-email"),
+      "your-subject": formData.get("your-subject"),
+      "your-message": formData.get("your-message"),
+    });
+
+    if (!parsed.success) {
+      parsed.error.errors.forEach((err) => toastError(err.message));
+      return;
+    }
+
+    // Tag requerido por CF7
+    formData.append("_wpcf7_unit_tag", "wpcf7-f277-p1-o1");
+
+    // Loading state
+    submitBtn.textContent = "Enviando...";
+    submitBtn.disabled = true;
+
+    try {
+      const response = await fetch(CF7_URL, {
+        method: "POST",
+        body: formData,
+      });
+
+      const json = await response.json();
+
+      if (json.status === "mail_sent") {
+        form.reset();
+        toastSuccess(json.message || "¡Mensaje enviado con éxito!");
+      } else if (json.status === "validation_failed") {
+        toastWarning(json.message || "Por favor revisa los campos");
+      } else {
+        toastWarning(json.message || "Hubo un problema al enviar el mensaje");
+      }
+    } catch (error) {
+      console.error("Error al enviar formulario:", error);
+      toastError("No se pudo conectar con el servidor");
+    } finally {
+      submitBtn.textContent = "Enviar";
+      submitBtn.disabled = false;
+    }
+  });
+</script>

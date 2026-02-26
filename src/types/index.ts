@@ -73,14 +73,43 @@ export const LocationSchema = z.object({
   lat: z.coerce.number().default(0),
   lng: z.coerce.number().default(0),
   zoom: z.coerce.number().default(15),
-});
+})
 
 export const ContactWPSchema = BaseWPSchema.extend({
   acf: z.object({
     subtitle: z.string(),
     location: LocationSchema,
   }),
-});
+})
+
+// ── Schema de validación del formulario de contacto ──────────
+export const ContactFormSchema = z.object({
+  'your-name': z
+    .string()
+    .min(1, 'El nombre es requerido')
+    .min(2, 'El nombre debe tener al menos 2 caracteres')
+    .max(100, 'El nombre no puede superar los 100 caracteres'),
+
+  'your-email': z
+    .string()
+    .min(1, 'El email es requerido')
+    .email('El email no es válido'),
+
+  'your-subject': z
+    .string()
+    .min(1, 'El asunto es requerido')
+    .min(2, 'El asunto debe tener al menos 2 caracteres')
+    .max(200, 'El asunto no puede superar los 200 caracteres'),
+
+  'your-message': z
+    .string()
+    .min(1, 'El mensaje es requerido')
+    .min(20, 'El mensaje debe tener al menos 20 caracteres')
+    .max(2000, 'El mensaje no puede superar los 2000 caracteres'),
+})
+
+// Tipo exportado
+export type ContactFormData = z.infer<typeof ContactFormSchema>
 
 // Tipos exportados
 export type Post = z.infer<typeof PostWPSchema>

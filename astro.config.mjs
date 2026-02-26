@@ -8,6 +8,6 @@ export default defineConfig({
     plugins: [tailwindcss()],
   },
   image: {
-    domains: ['astrocoffee.local'],
+    domains: ['astrocoffee.juliandrv.com'],
   },
 });
