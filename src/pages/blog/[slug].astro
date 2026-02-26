@@ -3,10 +3,14 @@ import PostMeta from "@/components/blog/PostMeta.astro";
 import Layout from "@/layouts/Layout.astro";
 import { PostWPSchema, PostsWPListSchema, type Post } from "@/types";
 
-const API = import.meta.env.API_WP_URL;
-
 // 1️⃣ Genera todas las rutas en build
 export async function getStaticPaths() {
+  const API = import.meta.env.API_WP_URL!;
+
+  if (!API) {
+    throw new Error("API_WP_URL no está definida en el entorno");
+  }
+
   const res = await fetch(`${API}/posts`);
   const json = await res.json();
   const posts: Post[] = PostsWPListSchema.parse(json);
@@ -17,6 +21,7 @@ export async function getStaticPaths() {
 }
 
 // 2️⃣ Obtiene datos del post en build time
+const API = import.meta.env.API_WP_URL!;
 const { slug } = Astro.params;
 
 const response = await fetch(`${API}/posts?slug=${slug}`);
@@ -28,6 +33,8 @@ if (!data.success) {
 }
 
 const { title, content, featured_image_url, date, category_list } = data.data;
+---
+
 ---
 
 <Layout
