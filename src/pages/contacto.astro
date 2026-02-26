@@ -1,10 +1,9 @@
 ---
 import Layout from "@/layouts/Layout.astro";
-// import ContactForm from "@/components/contact/ContactForm.astro";
+import ContactForm from "@/components/contact/ContactForm.astro";
 import Map from "@/components/contact/Map.astro";
 
 import { ContactWPSchema } from "@/types";
-import Form from "@/components/contact/Form.astro";
 
 const url = `${import.meta.env.API_WP_URL}/pages?slug=contacto`;
 const response = await fetch(url);
@@ -23,8 +22,7 @@ const { location } = acf;
   <div set:html={content.rendered} class="space-y-3 mt-10 md:mt-0" />
 
   <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-10">
-    <!-- <ContactForm /> -->
-    <Form />
+    <ContactForm />
     <Map
       lat={location.lat}
       lng={location.lng}
