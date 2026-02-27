@@ -1,7 +1,7 @@
 // @ts-check
 import vercel from '@astrojs/vercel';
 import tailwindcss from "@tailwindcss/vite";
-import { defineConfig, passthroughImageService } from 'astro/config';
+import { defineConfig} from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,8 +14,12 @@ export default defineConfig({
   security: {
     checkOrigin: false
   },
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'hover', // Carga la data cuando el usuario pone el cursor sobre el link
+  },
   image: {
     domains: ['astrocoffee.juliandrv.com'],
-    service: passthroughImageService()
+    // service: passthroughImageService()
   },
 });
