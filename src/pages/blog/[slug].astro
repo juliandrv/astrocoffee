@@ -1,9 +1,9 @@
 ---
+export const prerender = true;
+
 import PostMeta from "@/components/blog/PostMeta.astro";
 import Layout from "@/layouts/Layout.astro";
 import { PostWPSchema, PostsWPListSchema, type Post } from "@/types";
-
-export const prerender = true;
 
 // 1️⃣ Genera todas las rutas en build
 export async function getStaticPaths() {

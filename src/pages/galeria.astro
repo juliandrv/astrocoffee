@@ -1,7 +1,10 @@
 ---
+export const prerender = true;
+
 import Layout from "@/layouts/Layout.astro";
-import { GalleryWPSchema } from "@/types";
 import GalleryGrid from "@/components/gallery/GalleryGrid.astro";
+
+import { GalleryWPSchema } from "@/types";
 
 const url = `${import.meta.env.API_WP_URL}/pages?slug=galeria`;
 const response = await fetch(url);

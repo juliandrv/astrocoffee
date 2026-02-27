@@ -5,6 +5,8 @@ import Map from "@/components/contact/Map.astro";
 
 import { ContactWPSchema } from "@/types";
 
+export const prerender = true;
+
 const url = `${import.meta.env.API_WP_URL}/pages?slug=contacto`;
 const response = await fetch(url);
 const json = await response.json();
