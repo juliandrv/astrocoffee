@@ -61,76 +61,79 @@
   </form>
 </div>
 
-<script>
+<script is:inline type="module">
   import { actions, isInputError } from "astro:actions";
 
   // @ts-ignore
   import Toastify from "toastify-js";
   import "toastify-js/src/toastify.css";
 
-  const form = document.querySelector("form");
+  function initForm() {
+    const form = document.querySelector("form");
 
-  function clearErrors() {
-    document.querySelectorAll(".field-error").forEach((el) => {
-      el.textContent = "";
-      el.classList.add("hidden");
-    });
-  }
+    function clearErrors() {
+      document.querySelectorAll(".field-error").forEach((el) => {
+        el.textContent = "";
+        el.classList.add("hidden");
+      });
+    }
 
-  form?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    clearErrors();
+    form?.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      clearErrors();
 
-    const formData = new FormData(form);
-    const { data, error } = await actions.contact.sendEmail(formData);
-    const inputErrors = isInputError(error) ? error.fields : [];
+      const formData = new FormData(form);
+      const { data, error } = await actions.contact.sendEmail(formData);
+      const inputErrors = isInputError(error) ? error.fields : [];
 
-    if (inputErrors) {
-      const allErrors = Object.values(inputErrors).flat();
+      if (inputErrors) {
+        const allErrors = Object.values(inputErrors).flat();
 
-      allErrors.forEach((error) => {
+        allErrors.forEach((error) => {
+          Toastify({
+            text: error,
+            duration: 6000,
+            gravity: "top",
+            position: "right",
+            style: {
+              background: "#b91c1c",
+              borderRadius: "8px",
+            },
+            stopOnFocus: true,
+          }).showToast();
+        });
+      }
+
+      if (error) {
         Toastify({
-          text: error,
+          text: error.message || "Hubo un problema al procesar la solicitud",
           duration: 6000,
           gravity: "top",
           position: "right",
           style: {
-            background: "#b91c1c",
+            background: "#f59e0b",
             borderRadius: "8px",
           },
           stopOnFocus: true,
         }).showToast();
-      });
-    }
+        return;
+      }
 
-    if (error) {
-      Toastify({
-        text: error.message || "Hubo un problema al procesar la solicitud",
-        duration: 6000,
-        gravity: "top",
-        position: "right",
-        style: {
-          background: "#f59e0b",
-          borderRadius: "8px",
-        },
-        stopOnFocus: true,
-      }).showToast();
-      return;
-    }
-
-    if (data?.success) {
-      form.reset();
-      Toastify({
-        text: data.message || "¡Mensaje enviado con éxito!",
-        duration: 6000,
-        gravity: "top",
-        position: "right",
-        style: {
-          background: "#22c55d",
-          borderRadius: "8px",
-        },
-        stopOnFocus: true,
-      }).showToast();
-    }
-  });
+      if (data?.success) {
+        form.reset();
+        Toastify({
+          text: data.message || "¡Mensaje enviado con éxito!",
+          duration: 6000,
+          gravity: "top",
+          position: "right",
+          style: {
+            background: "#22c55d",
+            borderRadius: "8px",
+          },
+          stopOnFocus: true,
+        }).showToast();
+      }
+    });
+  }
+  document.addEventListener("astro:page-load", initForm);
 </script>
