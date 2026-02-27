@@ -5,6 +5,7 @@ import { defineConfig, passthroughImageService } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://astrocoffee.vercel.app',
   output: 'server',
   adapter: vercel(),
   vite: {
@@ -14,4 +15,7 @@ export default defineConfig({
     domains: ['astrocoffee.juliandrv.com'],
     service: passthroughImageService()
   },
+  security: {
+    checkOrigin: true
+  }
 });
