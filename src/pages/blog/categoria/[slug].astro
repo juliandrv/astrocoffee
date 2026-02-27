@@ -1,13 +1,21 @@
 ---
-import Layout from '@/layouts/Layout.astro';
-import PostCard from '@/components/blog/PostCard.astro';
+export const prerender = true;
 
-import bgImage from '@/assets/bg_home.jpg';
+import Layout from "@/layouts/Layout.astro";
+import PostCard from "@/components/blog/PostCard.astro";
 
-import { PostsWPListSchema, CategoriesWPSlugSchema, CategorySchema } from '@/types';
+import bgImage from "@/assets/bg_home.jpg";
+
+import {
+  PostsWPListSchema,
+  CategoriesWPSlugSchema,
+  CategorySchema,
+} from "@/types";
 
 export async function getStaticPaths() {
-  const response = await fetch(`${import.meta.env.API_WP_URL}/categories?_fields=slug`);
+  const response = await fetch(
+    `${import.meta.env.API_WP_URL}/categories?_fields=slug`,
+  );
   const json = await response.json();
   const categories = CategoriesWPSlugSchema.parse(json);
   return categories.map((category) => ({
@@ -27,6 +35,10 @@ const postsJson = await postsResponse.json();
 const postsData = PostsWPListSchema.parse(postsJson);
 ---
 
-<Layout title={categoryData.name} subtitle={`Categoría: ${categoryData.name}`} bgImage={bgImage}>
+<Layout
+  title={categoryData.name}
+  subtitle={`Categoría: ${categoryData.name}`}
+  bgImage={bgImage}
+>
   {postsData.map((post) => <PostCard post={post} />)}
 </Layout>
