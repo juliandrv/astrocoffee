@@ -11,11 +11,11 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+  security: {
+    checkOrigin: false
+  },
   image: {
     domains: ['astrocoffee.juliandrv.com'],
     service: passthroughImageService()
   },
-  security: {
-    checkOrigin: true
-  }
 });
