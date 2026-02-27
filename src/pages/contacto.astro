@@ -1,11 +1,11 @@
 ---
-import Layout from "@/layouts/Layout.astro";
 import ContactForm from "@/components/contact/ContactForm.astro";
 import Map from "@/components/contact/Map.astro";
+import Layout from "@/layouts/Layout.astro";
 
 import { ContactWPSchema } from "@/types";
 
-export const prerender = true;
+// export const prerender = true;
 
 const url = `${import.meta.env.API_WP_URL}/pages?slug=contacto`;
 const response = await fetch(url);

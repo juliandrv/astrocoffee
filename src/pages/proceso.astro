@@ -1,10 +1,8 @@
 ---
-export const prerender = true;
-
-import { inferRemoteSize } from "astro:assets";
+import ProcessItem from "@/components/process/ProcessItem.astro";
 import Layout from "@/layouts/Layout.astro";
 import { ProcessWPSchema, type ProcessPage } from "@/types";
-import ProcessItem from "@/components/process/ProcessItem.astro";
+import { inferRemoteSize } from "astro:assets";
 
 const url = `${import.meta.env.API_WP_URL}/pages?slug=proceso`;
 const response = await fetch(url);

@@ -1,15 +1,15 @@
 ---
-export const prerender = true;
+// export const prerender = true;
 
-import Layout from "@/layouts/Layout.astro";
 import PostCard from "@/components/blog/PostCard.astro";
+import Layout from "@/layouts/Layout.astro";
 
 import bgImage from "@/assets/bg_home.jpg";
 
 import {
-  PostsWPListSchema,
   CategoriesWPSlugSchema,
   CategorySchema,
+  PostsWPListSchema,
 } from "@/types";
 
 export async function getStaticPaths() {
